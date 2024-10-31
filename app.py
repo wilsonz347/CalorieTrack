@@ -17,7 +17,7 @@ def main():
 
     st.expander('How It Works').write('This tool uses machine learning to predict how many calories you might burn during a workout. Here\'s how it works: \n1. You provide some information about yourself and your workout.\n2. Our model, trained on data from many different workouts, estimates your calorie burn.')
 
-    st.expander('Methods Used').write('\n1. Data Preparation: Cleaned and processed over 900 rows of data using Pandas.\n2. Model Selection: Linear Regression model for simplicity.\n3. Training and Validation: Scaled and split the data into a ratio of 80:20 using Scikit-Learn.\n4. Deployment: Employed Streamlit for its simple user interface.')
+    st.expander('Methods Used').write('\n1. Data Preparation: Cleaned and processed over a large dataset using Pandas.\n2. Model Selection: Linear Regression model for simplicity.\n3. Training and Validation: Scaled and split the data into a ratio of 80:20 using Scikit-Learn.\n4. Deployment: Employed Streamlit for its simple user interface.')
 
     st.expander('Transparency').write('For transparency purposes, we leveraged advanced AI-powered technology to enhance our debugging process.')
 
