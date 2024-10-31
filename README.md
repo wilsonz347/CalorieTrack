@@ -6,10 +6,10 @@ This project is a machine learning-based tool that predicts the number of calori
 2. The information will then be used to predict calorie burn using machine learning.
 
 ## Methods Used
-Data Preparation: Cleaned and processed a large dataset using Pandas.
-Model Selection: Implemented a Linear Regression model for simplicity.
-Training and Validation: Scaled and split the data into a ratio of 80:20 using Scikit-Learn.
-Deployment: Employed Streamlit for its simple user interface.
+1. Data Preparation: Cleaned and processed a large dataset using Pandas.
+2. Model Selection: Implemented a Linear Regression model for simplicity.
+3. Training and Validation: Scaled and split the data into a ratio of 80:20 using Scikit-Learn.
+4. Deployment: Employed Streamlit for its simple user interface.
 
 ## Transparency
 For transparency purposes, we leveraged advanced AI-powered technology to enhance our debugging process.
