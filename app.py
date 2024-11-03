@@ -15,7 +15,7 @@ def load_scaler():
     return scaler
 
 def main():
-    page = st.sidebar.selectbox("Choose a page", ["Project Overview","Data","Visualization","Prediction"])
+    page = st.sidebar.selectbox("Choose a page", ["Project Overview","Exploring Data","Visualization","Prediction"])
 
     if page == "Project Overview":
         st.title('Calories Burned Estimator App')
@@ -25,9 +25,42 @@ def main():
         st.expander('Transparency').write('For transparency purposes, we leveraged advanced AI-powered technology to enhance our debugging process.')
         st.expander('Credits').write('This project utilizes the Gym Members Exercise Dataset by Vala Khorasani, available under the Apache 2.0 License. The original dataset can be found at https://www.kaggle.com/datasets/valakhorasani/gym-members-exercise-dataset.')
 
-    if page == "Data":
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Dataset Size", "900+ entries")
+        with col2:
+            st.metric("Model Accuracy", "98%")
+
+        st.subheader("Key Features")
+        st.checkbox("Personalized calorie burn estimates", value=True, disabled=True)
+        st.checkbox("Easy-to-use interface", value=True, disabled=True)
+        st.checkbox("Based on real workout data", value=True, disabled=True)
+
+        if 'feedback' not in st.session_state:
+            st.session_state.feedback = []
+
+        # Use a unique key for the text area
+        if 'feedback_text' not in st.session_state:
+            st.session_state.feedback_text = ""
+
+        st.subheader("We'd love your feedback!")
+
+        feedback = st.text_area("Please share your thoughts or suggestions:",
+                                value = st.session_state.feedback_text,
+                                key="feedback_input",
+                                placeholder="Type your feedback here...")
+
+        if st.button("Submit Feedback"):
+            if feedback:
+                st.session_state.feedback.append(feedback)
+                st.session_state.feedback_text = ""
+                st.success("Thank you for your feedback!")
+            else:
+                st.warning("Please enter some feedback before submitting.")
+
+    if page == "Exploring Data":
         st.header('Data Overview')
-        st.write('This dataset contains information about 973 gym members, including their age, gender, weight, height, maximum heart rate, average heart rate, resting heart rate, session duration, workout type, fat percentage, water intake, workout frequency, experience level, and body mass index (BMI).')
+        st.write('This dataset contains information about 900+ gym members, including their age, gender, weight, height, maximum heart rate, average heart rate, resting heart rate, session duration, workout type, fat percentage, water intake, workout frequency, experience level, and body mass index (BMI).')
 
         # Preview first five rows
         st.subheader('Data Preview')
