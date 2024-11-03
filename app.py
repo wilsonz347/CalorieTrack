@@ -2,6 +2,7 @@ import time
 import streamlit as st
 import pandas as pd
 import pickle as pk
+import plotly.express as px
 
 def load_model():
     with open('linear_regressor.pkl', 'rb') as f:
@@ -14,7 +15,7 @@ def load_scaler():
     return scaler
 
 def main():
-    page = st.sidebar.selectbox("Choose a page", ["Project Overview","Data","Prediction"])
+    page = st.sidebar.selectbox("Choose a page", ["Project Overview","Data","Visualization","Prediction"])
 
     if page == "Project Overview":
         st.title('Calories Burned Estimator App')
@@ -46,6 +47,73 @@ def main():
             file_name='gym_members__exercise_tracking.csv',
             mime='text/csv',
         )
+
+    if page == "Visualization":
+        st.subheader('Data Visualizations')
+
+        df = pd.read_csv("gym_members_exercise_tracking.csv")
+        # Distribution of Age
+        st.write("### Age Distribution")
+        fig_age = px.histogram(df, x="Age", nbins=20, title="Distribution of Age", color_discrete_sequence=['#6A0DAD'], opacity=0.7)
+        fig_age.update_layout(
+            xaxis_title_text='Age',
+            yaxis_title_text='Count',
+            bargap=0.1,  # Gap between bars
+            plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
+            paper_bgcolor='rgba(0,0,0,0)'
+        )
+
+        # Add the average age
+        mean_age = df['Age'].mean()
+        fig_age.add_vline(x=mean_age, line_dash="dash", line_color="#FF4136",
+                          annotation_text=f"Mean Age: {mean_age:.1f}",
+                          annotation_position="top right")
+
+        # Customize axes
+        fig_age.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#E0E0E0',
+                             showline=True, linewidth=2, linecolor='#333333')
+        fig_age.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#E0E0E0',
+                             showline=True, linewidth=2, linecolor='#333333')
+
+        # Add hover information
+        fig_age.update_traces(hovertemplate='Age: %{x}<br>Count: %{y}')
+
+        st.plotly_chart(fig_age, use_container_width=True)
+
+        # Distribution of Gender
+        st.write("### Gender Distribution")
+        gender_counts = df['Gender'].value_counts().reset_index()
+        gender_counts.columns = ['Gender', 'Count']
+
+        fig_gender = px.pie(gender_counts,
+                            names='Gender',
+                            values='Count',
+                            title="Distribution of Gender",
+                            color_discrete_sequence=px.colors.qualitative.Set3)
+
+        # Add hover information
+        fig_gender.update_traces(hovertemplate='Gender: %{label}<br>Count: %{value}')
+
+        st.plotly_chart(fig_gender, use_container_width=True)
+
+        # Distribution of Experience Level
+        st.write("### Experience Level Distribution")
+        exp_counts = df['Experience_Level'].value_counts().sort_index()
+
+        exp_df = pd.DataFrame({'Experience_Level': exp_counts.index, 'Count': exp_counts.values})
+
+        fig_exp = px.bar(exp_df,
+                         x='Experience_Level',
+                         y='Count',
+                         color='Experience_Level',
+                         title="Distribution of Experience Level",
+                         labels={'Experience_Level': 'Experience Level', 'Count': 'Number of Members'},
+                         color_discrete_map={1: 'blue', 2: 'green', 3: 'red'})
+
+        fig_exp.update_layout(showlegend=False)
+
+        # Display the chart
+        st.plotly_chart(fig_exp)
 
     # Load the trained model & scaler
     model = load_model()
