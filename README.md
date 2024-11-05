@@ -17,6 +17,9 @@ For transparency purposes, we leveraged advanced AI-powered technology to enhanc
 ## Credit
 This project utilizes the Gym Members Exercise Dataset by Vala Khorasani, available under the Apache 2.0 License. The original dataset can be found at https://www.kaggle.com/datasets/valakhorasani/gym-members-exercise-dataset.
 
+## Deployment
+https://wilsonz347-calories-estimator-app-hq2jka.streamlit.app/
+
 ## Installation 
 1. Clone this repository
 2. Install the necessary packages: pip install -r requirements.txt
