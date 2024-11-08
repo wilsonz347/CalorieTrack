@@ -2,6 +2,7 @@ import time
 import streamlit as st
 import pandas as pd
 import pickle as pk
+import plotly.graph_objects as go
 import plotly.express as px
 
 def load_model():
@@ -15,6 +16,11 @@ def load_scaler():
     return scaler
 
 def main():
+    st.set_page_config(
+        page_title="CalorieTrack",
+        layout="wide",
+        initial_sidebar_state="collapsed"
+    )
     page = st.sidebar.selectbox("Choose a page", ["Project Overview","Exploring Data","Visualization","Prediction"])
 
     if page == "Project Overview":
@@ -222,6 +228,46 @@ def main():
 
             status.text('Prediction complete!')
             st.success(f"Estimated calories burned: {prediction[0]:.0f} calories")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                # Create radar chart
+                st.header('Your Fitness Profile')
+
+                # Select features for the radar chart
+                radar_features = ['Age', 'Weight (kg)', 'Height (m)', 'Max_BPM', 'Avg_BPM', 'Resting_BPM',
+                                  'Session_Duration (hours)', 'Fat_Percentage']
+
+                # Normalize the data for the radar chart
+                radar_data = input_df[radar_features].iloc[0]
+                radar_data_normalized = (radar_data - radar_data.min()) / (radar_data.max() - radar_data.min())
+
+                # Create the radar chart using Plotly
+                fig = go.Figure(data=go.Scatterpolar(
+                    r=radar_data_normalized.values,
+                    theta=radar_features,
+                    fill='toself'
+                ))
+
+                fig.update_layout(
+                    polar=dict(
+                        radialaxis=dict(
+                            visible=True,
+                            range=[0, 1]
+                        )),
+                    showlegend=False
+                )
+
+                # Display the radar chart
+                st.plotly_chart(fig)
+
+            with col2:
+                # Display actual values
+                st.subheader('Your Fitness Metrics')
+                for feature in radar_features:
+                    original_value = input_data[feature]
+                    st.write(f"{feature}: {original_value}")
 
 if __name__ == "__main__":
     main()
